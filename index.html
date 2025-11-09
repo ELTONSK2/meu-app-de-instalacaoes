@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle de Instalações</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>📊 Controle de Instalações</h1>
+        
+        <!-- Formulário para adicionar instalações -->
+        <div class="form-container">
+            <h3>➕ Nova Instalação</h3>
+            <form id="instalacaoForm">
+                <input type="text" id="codigo" placeholder="Código (5 dígitos)" maxlength="5" required>
+                <input type="text" id="nome" placeholder="Nome do cliente" required>
+                <input type="date" id="data" required>
+                <button type="submit">Adicionar Instalação</button>
+            </form>
+        </div>
+
+        <!-- Resumo do dia -->
+        <div class="resumo-dia">
+            <h3>📅 Resumo do Dia</h3>
+            <div id="resumoDia">Carregando...</div>
+        </div>
+
+        <!-- Lista de instalações -->
+        <div class="lista-instalacoes">
+            <h3>📋 Instalações do Mês</h3>
+            <div id="listaInstalacoes"></div>
+        </div>
+
+        <!-- Total do mês -->
+        <div class="total-mes">
+            <h3>💰 Total do Mês: <span id="totalMes">R$ 0,00</span></h3>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
