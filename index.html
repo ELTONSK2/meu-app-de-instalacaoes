@@ -20,6 +20,20 @@
                 <button type="submit">Adicionar Instalação</button>
             </form>
         </div>
+        <!-- Controle de Gasolina -->
+<div class="gasolina-container">
+    <h3>⛽ Controle de Gasolina</h3>
+    <form id="gasolinaForm">
+        <input type="date" id="dataGasolina" required>
+        <input type="number" id="valorGasolina" placeholder="Valor abastecido (R$)" step="0.01" required>
+        <input type="text" id="observacaoGasolina" placeholder="Observação (opcional)">
+        <button type="submit">Adicionar Gasolina</button>
+    </form>
+    
+    <div class="total-gasolina">
+        <h4>Total Gasolina Mês: R$ <span id="totalGasolinaMes">0,00</span></h4>
+    </div>
+</div>
 
         <!-- Resumo do dia -->
         <div class="resumo-dia">

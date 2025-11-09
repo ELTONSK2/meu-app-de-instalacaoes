@@ -63,3 +63,29 @@ button:hover {
 .instalacao-item:last-child {
     border-bottom: none;
 }
+.gasolina-container {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    border-left: 4px solid #ffa500;
+}
+
+.total-gasolina {
+    background: #fff3cd;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 10px;
+    border: 1px solid #ffeaa7;
+}
+
+.gasolina-item {
+    padding: 8px;
+    border-bottom: 1px solid #eee;
+    font-size: 0.9em;
+}
+
+.gasolina-item:last-child {
+    border-bottom: none;
+}

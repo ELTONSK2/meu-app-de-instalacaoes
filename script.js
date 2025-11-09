@@ -151,3 +151,127 @@ class ControleInstalacoes {
 document.addEventListener('DOMContentLoaded', () => {
     new ControleInstalacoes();
 });
+class ControleInstalacoes {
+    constructor() {
+        this.instalacoes = this.carregarDados();
+        this.gasolina = this.carregarGasolina(); // ← NOVO
+        this.init();
+    }
+
+    init() {
+        // Form de instalações (já existente)
+        document.getElementById('instalacaoForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            this.adicionarInstalacao();
+        });
+
+        // NOVO: Form de gasolina
+        document.getElementById('gasolinaForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            this.adicionarGasolina();
+        });
+
+        // Data padrão é hoje
+        const hoje = this.getDataHoje();
+        document.getElementById('data').value = hoje;
+        document.getElementById('dataGasolina').value = hoje; // ← NOVO
+        
+        this.atualizarInterface();
+    }
+
+    // NOVO: Adicionar gasolina
+    adicionarGasolina() {
+        const data = document.getElementById('dataGasolina').value;
+        const valor = parseFloat(document.getElementById('valorGasolina').value);
+        const observacao = document.getElementById('observacaoGasolina').value;
+
+        const registroGasolina = {
+            data,
+            valor,
+            observacao,
+            id: Date.now()
+        };
+
+        this.gasolina.push(registroGasolina);
+        this.salvarDados();
+        this.atualizarInterface();
+
+        // Limpar formulário
+        document.getElementById('gasolinaForm').reset();
+        document.getElementById('dataGasolina').value = data;
+    }
+
+    // NOVO: Calcular total de gasolina
+    calcularTotalGasolina() {
+        return this.gasolina.reduce((total, item) => total + item.valor, 0);
+    }
+
+    // ATUALIZAR: Calcular totais gerais
+    calcularTotais() {
+        const agrupadas = this.getInstalacoesPorData();
+        let totalMes = 0;
+
+        Object.keys(agrupadas).forEach(data => {
+            const qtd = agrupadas[data].length;
+            const valorUnitario = this.calcularValor(qtd);
+            const totalDia = qtd * valorUnitario;
+            totalMes += totalDia;
+        });
+
+        const totalGasolina = this.calcularTotalGasolina(); // ← NOVO
+        const saldoFinal = totalMes - totalGasolina; // ← NOVO
+
+        return { 
+            totalMes, 
+            totalGasolina,  // ← NOVO
+            saldoFinal      // ← NOVO
+        };
+    }
+
+    // ATUALIZAR: Interface com gasolina
+    atualizarInterface() {
+        this.atualizarResumoDia();
+        this.atualizarListaInstalacoes();
+        this.atualizarTotalMes();
+        this.atualizarListaGasolina(); // ← NOVO
+    }
+
+    // NOVO: Atualizar lista de gasolina
+    atualizarListaGasolina() {
+        const totalGasolina = this.calcularTotalGasolina();
+        document.getElementById('totalGasolinaMes').textContent = totalGasolina.toFixed(2);
+    }
+
+    // ATUALIZAR: Total do mês com gasolina
+    atualizarTotalMes() {
+        const { totalMes, totalGasolina, saldoFinal } = this.calcularTotais();
+        
+        document.getElementById('totalMes').innerHTML = `
+            <div style="border: 1px solid #ddd; padding: 10px; border-radius: 5px; margin: 5px 0;">
+                <p><strong>Total Instalações:</strong> R$ ${totalMes},00</p>
+                <p><strong>Total Gasolina:</strong> R$ ${totalGasolina.toFixed(2)}</p>
+                <p style="font-size: 1.2em; font-weight: bold; color: ${saldoFinal >= 0 ? 'green' : 'red'};">
+                    <strong>Saldo Final:</strong> R$ ${saldoFinal.toFixed(2)}
+                </p>
+            </div>
+        `;
+    }
+
+    // ATUALIZAR: Salvar dados (incluir gasolina)
+    salvarDados() {
+        localStorage.setItem('controleInstalacoes', JSON.stringify(this.instalacoes));
+        localStorage.setItem('controleGasolina', JSON.stringify(this.gasolina)); // ← NOVO
+    }
+
+    // ATUALIZAR: Carregar dados (incluir gasolina)
+    carregarDados() {
+        const dados = localStorage.getItem('controleInstalacoes');
+        return dados ? JSON.parse(dados) : [];
+    }
+
+    // NOVO: Carregar gasolina
+    carregarGasolina() {
+        const dados = localStorage.getItem('controleGasolina');
+        return dados ? JSON.parse(dados) : [];
+    }
+}
